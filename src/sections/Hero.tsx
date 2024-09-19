@@ -1,13 +1,34 @@
+"use client";
 import { Button } from "@/components/Button";
 import starsBg from "@/assets/stars.png";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 
 export const Hero = () => {
+  const sectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+
+  const backgroundPositionY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [-300, 300]
+  );
+
   return (
-    <section
+    <motion.section
+      ref={sectionRef}
       className="h-[492px] md:h-[800px] flex items-center overflow-hidden relative [mask-image:linear-gradient(to_bottom,transparent,black_10%,black_90%,transparent)]"
       style={{
         backgroundImage: `url(${starsBg.src})`,
+        backgroundPositionY,
       }}
+      animate={{
+        backgroundPositionX: starsBg.width,
+      }}
+      transition={{ repeat: Infinity, duration: 120, ease: "linear" }}
     >
       <div className="absolute inset-0 bg-[radial-gradient(75%_75%_at_center_center,rgb(140,69,255,.5)_15%,rgb(14,0,36,.5)_78%,transparent)]"></div>
       {/* PLANET */}
@@ -21,7 +42,12 @@ export const Hero = () => {
 
       {/* RINGS */}
       {/* RING 1 */}
-      <div className="absolute w-[344px] h-[344px] md:w-[580px] md:h-[580px] border rounded-full opacity-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <motion.div
+        animate={{ rotate: 360 }}
+        style={{ translateY: "-50%", translateX: "-50%" }}
+        transition={{ repeat: Infinity, duration: 30, ease: "linear" }}
+        className="absolute w-[344px] h-[344px] md:w-[580px] md:h-[580px] border rounded-full opacity-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+      >
         {/* CIRCLES ON RINGS */}
         {/* left */}
         <div className="absolute w-2 h-2 top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 bg-white rounded-full"></div>
@@ -32,16 +58,26 @@ export const Hero = () => {
         <div className="absolute w-5 h-5 top-1/2 right-0 translate-x-1/2 -translate-y-1/2 border border-white rounded-full inline-flex justify-center items-center">
           <div className="w-2 h-2 bg-white rounded-full"></div>
         </div>
-      </div>
+      </motion.div>
       {/* RING 2 */}
-      <div className="absolute w-[444px] h-[444px] md:w-[780px] md:h-[780px] border border-dashed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-white/20"></div>
+      <motion.div
+        animate={{ rotate: -360 }}
+        style={{ translateY: "-50%", translateX: "-50%" }}
+        transition={{ repeat: Infinity, duration: 60, ease: "linear" }}
+        className="absolute w-[444px] h-[444px] md:w-[780px] md:h-[780px] border border-dashed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border-white/20"
+      ></motion.div>
       {/* RING 3 */}
-      <div className="absolute w-[544px] h-[544px] md:w-[980px] md:h-[980px] border border-white opacity-20 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+      <motion.div
+        animate={{ rotate: 360 }}
+        style={{ translateY: "-50%", translateX: "-50%" }}
+        transition={{ repeat: Infinity, duration: 90, ease: "linear" }}
+        className="absolute w-[544px] h-[544px] md:w-[980px] md:h-[980px] border border-white opacity-20 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+      >
         {/* CIRCLES ON RINGS */}
         {/* left */}
         <div className="absolute w-2 h-2 top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 bg-white rounded-full"></div>
         <div className="absolute w-2 h-2 top-1/2 right-0 translate-x-1/2 -translate-y-1/2 bg-white rounded-full"></div>
-      </div>
+      </motion.div>
 
       {/* CONTENT */}
       <div className="container relative">
@@ -58,6 +94,6 @@ export const Hero = () => {
           </div>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 };
